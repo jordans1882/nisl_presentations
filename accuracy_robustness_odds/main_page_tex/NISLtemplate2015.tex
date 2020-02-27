@@ -1,0 +1,221 @@
+\documentclass[xcolor={table}]{beamer}
+%\documentclass[notes=only]{beamer}
+
+% Theme Import
+\usepackage{./sty/beamerthemeMSU}
+\usepackage{verbatim}
+
+% Packages
+%\usepackage{caption}
+\usepackage{hyperref}
+%\usepackage{media9}   % If embedding sound/video
+\usepackage{amsmath} % Used on formula slide
+\usepackage{cancel}     % Used on formula slide
+\usepackage{listings}    % If using syntax highlighting
+\usepackage{tikz}	       % If using tikz
+\usepackage{algorithmic}
+\usepackage{algorithm}
+\usepackage{graphicx}
+
+%added these in, might not always need
+\usepackage{multicol}
+
+% Miscellaneous control settings
+\setlength{\columnsep}{1cm}
+%\captionsetup{justification=centering}
+
+% Useful Operators
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\argmax}{argmax}
+\newcommand*{\argminl}{\argmin\limits}
+\newcommand*{\argmaxl}{\argmax\limits}
+
+
+
+%%%%%%%%%%%%%%%%%%
+%                        TITLE
+%%%%%%%%%%%%%%%%%%
+\title[NISL Final Presentation]{Compiling relational Bayesian networks for exact inference}
+\author[]{Mark Chavira, Adnan Darwiche, Manfred Jaeger}
+\date{}
+%\institute[MSU]{Montana State University}
+
+%%%%%%%%%%%%%%%%%%
+%                 DOCUMENT
+%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+% Title Frame
+\begin{frame}
+\titlepage
+\end{frame}
+
+%%%%%%%%%%%%%%%%
+%			INTRODUCTION
+%%%%%%%%%%%%%%%%
+\begin{frame}{Motivation}
+Standard inference in relational Bayesian Networks usually:
+\begin{itemize}
+\item generates propositional instance taking the form of a Bayesian Network,
+\item then applies classical inference algorithms for Bayesian Networks to that instance.
+\end{itemize}
+%\end{block}
+Computational complexity becomes prohibitive even for a reasonably compact representations.
+\end{frame}
+
+%%%%%%%%%%%%%%%%
+%			Background
+%%%%%%%%%%%%%%%%
+\begin{frame}{Bayesian Networks}
+\begin{block}{}
+A Bayesian network consists of a Directed Acyclic Graph, where nodes represent random variables. Each node $\mathit{X}$ has an associated Conditional Probability Table, which specifies the conditional probabilities  $Pr(x|\mathbf{u})$, where $\mathbf{u}$ is a configuration of the parents $\mathbf{U}$ of $X$ in the network..
+\end{block}
+\includegraphics[scale=0.4]{img/ExBN.PNG}
+\end{frame}
+
+\begin{frame}{Relational Bayesian Networks}
+\begin{block}{}
+Given:
+\begin{itemize}
+\item a set of relational symbols $S$, called predefined relations;
+\item a set of relational symbols $R$, called probabilistic relations;
+\item a finite set $D$, called the domain;
+\end{itemize}
+An $S^{D}$-structure is a function which maps every ground atom $s(d)$ ($s \in S$, $d \subseteq D$) to either true or false.
+\end{block}
+Random relational structure model (RRSM): a partial function which takes an $S^{D}$-structure %(i.e. skeleton structure from last paper)
+as input, and returns a probability distribution over all $R^{D}$-structures as output.
+\end{frame}
+
+%%%%%%%%%%%%%%%%
+%			Algorithm
+%%%%%%%%%%%%%%%%
+\begin{frame}{Arithmetic Circuits}
+%Input: $S^{D}$ structure.
+%\begin{itemize}
+
+%Compile network into arithmetic circuit. :
+\begin{enumerate}
+\item Evidence indicator $\lambda_{x}$ for each value $x$ of random variable $X$ in the network.
+\item Network parameter $\theta_{x|\mathbf{u}}$ for each instantiation $x$, $\mathbf{u}$ of each variable $X$ and its parents $\mathbf{U}$ in the network.
+\item Multiply all evidence indicators and network parameters consistent with a particular instantiation. E.g.
+
+$f = \lambda_{a}\lambda_{b}\lambda_{c}\theta_{a}\theta_{b|a}\theta_{c|a} + \ldots + \lambda_{\bar{a}}\lambda_{\bar{b}}\lambda_{\bar{c}}\theta_{\bar{a}}\theta_{\bar{b}|\bar{a}}\theta_{\bar{c}|\bar{a}} $
+\end{enumerate}
+The arithmetic circuit $f$ has $2n$ variables in each term, and $2^{n}$ terms.
+We can answer queries by evaluating and differentiating $f$.
+%\end{itemize}
+\end{frame}
+
+\begin{frame}{Compiling an arithmetic circuit}%Too dense!!!
+\begin{itemize}
+\item Encode a multi-linear function using a propositional theory. %Each model encodes a term in the function.  Model $\sigma = true$ precisely when term $t$ includes real-valued variable $j$.
+\item Factor the propositional encoding. %Starting with a set of models, build a Boolean circuit in negation normal form (NNF). The NNF must satisfy decomposability, determinism, and smoothness properties.
+\item Extract an arithmetic circuit. %Replace $\land$-nodes with multiplications, replace $\lor$-nodes with additions, replace $V_{x}$ with $x$, replace $\neg V_{x}$ with 1.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Using an arithmetic circuit}
+
+Example:
+
+\includegraphics[scale=0.2]{img/ExBN2.PNG}
+
+$f = \lambda_{a}\lambda_{b}\theta_{a}\theta_{b|a} + \lambda_{\bar{a}}\lambda_{b}\theta_{\bar{a}}\theta_{b|\bar{a}} + \lambda_{a}\lambda_{\bar{b}}\theta_{a}\theta_{\bar{b}|a} + \lambda_{\bar{a}}\lambda_{\bar{b}}\theta_{\bar{a}}\theta_{\bar{b}|\bar{a}}$
+
+\vspace{0.5cm}
+
+Partial derivative with respect to evidence indicator:
+
+$\frac{\partial f}{\partial \lambda_{a}} = \lambda_{b}\theta_{a}\theta_{b|a} + \lambda_{\bar{b}}\theta_{a}\theta_{\bar{b}|a}$
+
+\vspace{0.5cm}
+
+$\frac{\partial f}{\partial \lambda_{a}}$ corresponds to conditioning $f$ on event $a$.
+\end{frame}
+
+%%%%%%%%%%%%%%%%
+%			Experiments
+%%%%%%%%%%%%%%%%
+\begin{frame}{Experimental Setup}
+\begin{itemize}
+
+\item 31 randomly generated evidence sets for each network.
+\item Recorded size of compiled arithmetic circuits (both nodes and edges).
+\item Average time to compile circuit and to differentiate circuit.
+\item Compared size to a Bayesian Network and CNF encoding.
+\item Compared time to time for jointree propagation.
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Problems}
+4 problems: Mastermind, Students, Blockmap, Friends \& Smokers.
+\begin{block}{Mastermind}
+\begin{itemize}
+\item Objects: $peg$, $color$, $round$
+\item Relations: game configurations after $r$ rounds
+\item Network Type: $c$ is number of colors, $g$ is number of guesses, $p$ is number of pegs
+\end{itemize}
+\end{block}
+
+\begin{block}{Students}
+\begin{itemize}
+\item Objects: $student$, $professor$
+\item Relations: advisor relationship, professor fame and funding level, student success
+\item Network type: $p$ is number of professors, $s$ is number of students
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}{Problems continued}
+\begin{block}{Blockmap}
+\begin{itemize}
+\item Objects: $block$, $location$
+\item Relations: placing block on a location, path between two locations
+\item Network Type: $l$ is number of locations, $b$ is number of blocks
+\end{itemize}
+\end{block}
+\begin{block}{Friends \& Smokers}
+\begin{itemize}
+\item Objects: individuals $u,v$
+\item Relations: friendship, whether a person smokes or has cancer
+\item Network Type: $n$ is number of people
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Results}
+\includegraphics[scale=0.3]{img/ResMasStu.PNG}
+\end{frame}
+
+\begin{frame}{Results continued}
+\includegraphics[scale=0.3]{img/ResBloFrsm.PNG}
+\end{frame}
+
+%%%%%%%%%%%%%%%%
+%			Conclusion
+%%%%%%%%%%%%%%%%
+\begin{frame}{Conclusion}
+\begin{itemize}
+\item Differential approach to inference in Relational Bayesian Networks.
+\item Expanded the scale of Relational Bayesian Networks that can be handled efficiently by exact inference algorithms.
+\item Approach is applicable to Bayesian Networks with similar characteristics, regardless of whether the original network is a relational model.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Discussion}
+\begin{enumerate}
+\item What was good about this paper? What was bad?
+\item Does this relate to your research? If yes, how?
+\item How big are the contributions of this paper?
+\item Have you encountered the differential approach to inference in normal Bayesian Networks before? Should this paper have explained that approach in more detail?
+\item Opinions on the Experiment section?
+\item How did you feel about the visualization of the results? What would you have used to visualize the results?
+\item Is this paper journal worthy? Conference worthy?
+\item Other thoughts?
+\end{enumerate}
+\end{frame}
+
+\end{document}
