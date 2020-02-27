@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>MongoDB Distributed transactions from top to bottom | by Henrik Ingo @henrikingo</title>
+    <title>Robustness May Be at Odds with Accuracy</title>
     
     <meta name="description" content="MongoDB Distributed transactions from top to bottom" />
     <meta name="author" content="Henrik Ingo" />
@@ -108,6 +108,7 @@
 	<script type="math/tex; mode=display">\underset{(x,y) \sim D}{\mathbb{E}} [\underset{\delta \in \Delta}{max}\mathcal{L}(x + \delta, y; \theta)]</script>
 	where <script type="math/tex">\Delta</script> is the set of <script type="math/tex">\ell_p</script>-bounded perturbations. I.e.
 	<script type="math/tex; mode=display">\Delta = \{ \delta \in \mathbb{R}^d : ||\delta||_p  \leq \epsilon \}</script>
+	<script type="math/tex">\Delta</script> is seen as the set of invariants that a good model should satisfy.
     </div>
 
     <div id="Adversarial-Robustness-cont" class="step" data-rel-x="-1500" data-rel-y="600" data-z="0">
@@ -203,19 +204,49 @@
     
     <div id="robustness-accuracy-tradeoff" class="step" data-rel-x="-1500" data-rel-y="0" data-z="0">
         <h1>Robustness Accuracy Tradeoff</h1>
+	<p> Theorem (Robustness Accuracy Tradeoff): Any classifier that attains
+	at least <script type="math/tex">1 - \delta</script> standard accuracy
+	on <script type="math/tex">\mathcal{D}</script> has robust accuracy at
+	most <script type="math/tex">\frac{p}{1-p} \delta</script> against all
+	<script type="math/tex">\ell_{\infty}</script>-bounded adversary with
+	<script type="math/tex">\epsilon \geq 2 \eta </script></p>
     </div>
     
     <div id="nonexistence-of-robust-and-accurate" class="step" data-rel-x="-1500" data-rel-y="0" data-z="0">
-        <h1>Nonexistence of Robust and Accurate</h1>
+        <h1>Nonexistence of Robust and Accurate classifiers</h1>
+	
+        <ul>
+          <li>One might think the bayes-optimal classifier as a candidate. However, this is not true in the data generating considered.</li>
+          <li> This goes against the common assumption in adversarial ML that such perfectly robust and accurate classifiers for standard datasets exist (i.e. humans)</li>
+        </ul>
     </div>
 
 
     <div id="adversarial-training-matters" class="step" data-rel-x="-1500" data-rel-y="0" data-z="0">
         <h1>Adversarial Training Matters</h1>
+	<p> Theorem (Adversarial Training Matters): For <script type="math/tex">\eta \geq 4/ \sqrt{d}</script> and
+	  <script type="math/tex">p \leq 0.975</script> a soft-margin SVM classifier of unit weight norm minimizing the
+	  distributional loss achieves a standard accuracy of > 99% and
+	  adversarial accuracy of <1% against
+	  an <script type="math/tex">\ell_{\infty}</script>-bounded adversary of
+	    <script type="math/tex">\epsilon \geq 2 \eta </script>.  Minimizing
+				      the distributional adversarial loss
+				      instead leads to a robust classifier that
+				      has a standard and adversarial accuracy of
+				      p against any
+				      <script type="math/tex">\epsilon<1</script>
+
+	</p>
+
     </div>
 
     <div id="transferability" class="step" data-rel-x="-1500" data-rel-y="0" data-z="0">
         <h1>Transferability</h1>
+        <ul>
+          <li>An implication of this analysis is that standard training relies on features that are weakly correlated with the correct label.</li>
+          <li>Thus adversarial examples that are created by perturbation will transfer across classifiers trained on independent samples of the distribution.</li>
+          <li>This might hint to the origin of the observed phenomenon of transferability.</li>
+        </ul>
     </div>
     
     <div id="unexpected-benefits" class="step" data-rel-x="-1800" data-rel-y="0" data-z="0">
@@ -236,15 +267,23 @@
     <div id="questions" class="step" data-rel-x="-1500" data-rel-y="0" data-z="0">
         <h1>Questions</h1>
         <ul>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
+          <li>What did you like most about the paper?</li>
+          <li>What did you like least about the paper?</li>
+          <li>What are your thoughts on the presentation of their results?</li>
+          <li>What do you think was their greatest contribution in this work?</li>
+          <li>Did you find these results to be surprising?</li>
         </ul>
     </div>
 
+    <div id="questions2" class="step" data-rel-x="-1500" data-rel-y="0" data-z="0">
+        <h1>Questions</h1>
+        <ul>
+          <li>What do you think about the standard assumption of adversarial ML that a perfectly robust and accurate classifier exists?</li>
+          <li>How do you think these results tie to the no-free-lunch theorem?</li>
+          <li>Did you find their examples compelling?</li>
+        </ul>
+    </div>
 </div>
-
 
 
 <!--
