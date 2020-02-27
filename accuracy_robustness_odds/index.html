@@ -31,22 +31,22 @@
         <h3></h3>
     </div>
 
-    <div class="step title tree-img skip" data-x="-3200" data-y="-1500" data-z="-5000" data-scale="6.5"> </div>
+    <div id="Title" class="step title tree-img skip" data-x="-3200" data-y="-1500" data-z="-5000" data-scale="6.5"> </div>
     <div class="step title robust-img skip" data-x="-9700" data-y="4600" data-z="-5000" data-scale="4.5"> </div>
     <div class="step title tow-img skip" data-x="-3200" data-y="4300" data-z="-5000" data-scale="6.5"> </div>
     <div class="step title accuracy-img skip" data-x="4000" data-y="4800" data-z="-5000" data-scale="4.5"> </div>
-    <div id="tow" class="step" data-x="-3200" data-y="4500" data-z="0"> </div>
-    <div id="robust" class="step" data-x="-9700" data-y="4500" data-z="0"> </div>
-    <div id="accuracy" class="step" data-x="4000" data-y="4500" data-z="0"> </div>
+    <div id="TOW" class="step" data-x="-3200" data-y="4500" data-z="0"> </div>
+    <div id="Robust" class="step" data-x="-9700" data-y="4500" data-z="0"> </div>
+    <div id="Accuracy" class="step" data-x="4000" data-y="4500" data-z="0"> </div>
 
-    <div id="history" class="step history" data-rel-x="3400">
+    <div id="Intro" class="step history" data-rel-x="3400">
         <h1>More specifically...</h1>
         <ul>
         <li>An inherent tension between adversarial robustness and standard generalization</li>
         </ul>
     </div>
 
-    <div id="mvcc-conflict" class="step" data-rel-x="500" data-rel-y="-800" data-rel-z="0" data-scale="1">
+    <div id="Tension" class="step" data-rel-x="500" data-rel-y="-800" data-rel-z="0" data-scale="1">
         <h1>This Tension</h1>
         <ul>
         <li>They show provably exists!</li>
@@ -56,7 +56,7 @@
         </ul>
     </div>
 
-    <div id="mvcc-conflict-cont" class="step" data-rel-x="1500" data-rel-y="400" data-rel-z="0">
+    <div id="Adversarial-Examples-Problem" class="step" data-rel-x="1500" data-rel-y="400" data-rel-z="0">
         <h1>The Problem of Adversarial Examples</h1>
         <ul>
         <li>One can introduce "small" and often inperceptible purtubations cause the model to make high-confident but erroneous peredictions</li>
@@ -65,7 +65,7 @@
         </ul>
     </div>
 
-    <div id="mvcc-skew" class="step" data-rel-x="0" data-rel-y="1500" data-rel-z="0">
+    <div id="History-of-Adversarial-Examples" class="step" data-rel-x="0" data-rel-y="1500" data-rel-z="0">
         <h1>A history of adversarial examples</h1>
         <ul>
         <li>Many attempts: (Goodfellow et al. 2015; Nguyen et al. 2015; Moosavi-Dezfooli et al. 2016; Carlini & Wagner 2017; ...)  </li>
@@ -74,15 +74,17 @@
         </ul>
     </div>
 
-    <div id="mvcc-skew-cont" class="step" data-rel-x="100" data-rel-y="1000" data-rel-z="0">
+    <div id="Robust-Statistics" class="step" data-rel-x="100" data-rel-y="1000" data-rel-z="0">
         <h1>Robust Statistics</h1>
+	<ul>
         <li>Robust to outliers (Mean versus Median)</li>
         <li>Robust to model mispecification (Model Averaging, Bayesian Models)</li>
         <li>Huber's M-Statistics.... Huber's Loss</li>
+	</ul>
 	<script type="math/tex; mode=display">L(y, f(y)) = \begin{cases} max(0, 1 - yf(x))^2 & yf(x) \geq -1\\ -4yf(x) & Otherwise \end{cases}</script>
     </div>
 
-    <div id="mvcc-skew-cont2" class="step" data-rel-x="1200" data-rel-y="700" data-rel-z="0">
+    <div id="Costs-of-Adversarial-Training" class="step" data-rel-x="1200" data-rel-y="800" data-rel-z="0">
         <h1>The costs of Adversarial Training</h1>
         <ul>
             <li>Computational</li>
@@ -90,41 +92,157 @@
         </ul>
     </div>
 
-    <div id="mvcc-skew-cont3" class="step" data-rel-x="-1000" data-rel-y="300" data-rel-z="0">
-        <h1>The standard approach</h1>
+    <div id="Standard-Accuracy-Maximization" class="step" data-rel-x="-1500" data-rel-y="0" data-z="0">
+        <h1>Maximizing Standard Accuracy</h1>
         <ul>
-            <li></li>
-            <li></li>
+          <li>Want to train models with low expected loss (i.e. Minimize </li>
+        </ul>
+	<script type="math/tex; mode=display">\underset{(x,y) \sim D}{\mathbb{E}} [\mathcal{L}(x, y; \theta)]</script>
+    </div>
+
+    <div id="Adversarial-Robustness" class="step" data-rel-x="-1500" data-rel-y="0" data-z="0">
+        <h1>Adversarial Robustness</h1>
+        <ul>
+          <li>Minimize Adversarial Loss</li>
+        </ul>
+	<script type="math/tex; mode=display">\underset{(x,y) \sim D}{\mathbb{E}} [\underset{\delta \in \Delta}{max}\mathcal{L}(x + \delta, y; \theta)]</script>
+	where <script type="math/tex">\Delta</script> is the set of <script type="math/tex">\ell_p</script>-bounded perturbations. I.e.
+	<script type="math/tex; mode=display">\Delta = \{ \delta \in \mathbb{R}^d : ||\delta||_p  \leq \epsilon \}</script>
+    </div>
+
+    <div id="Adversarial-Robustness-cont" class="step" data-rel-x="-1500" data-rel-y="600" data-z="0">
+        <h1>Adversarial Robustness (cont.)</h1>
+        <ul>
+          <li>Other notions include:</li>
+          <ul>
+            <li>Rotations</li>
+            <li>Translations</li>
+            <li>Smooth spatial deformations</li>
+          </ul>
         </ul>
     </div>
 
+    <div id="Adversarial-Training" class="step" data-rel-x="-1500" data-rel-y="400" data-z="0">
+        <h1>Adversarial Training (Goodfellow 2015)</h1>
+        <ul>
+          <li>Most successfull approach (Ben-Tal et al. 2009):</li>
+        </ul>
+	<script type="math/tex; mode=display">\underset{\theta}{min} \underset{(x,y) \sim \hat{D}}{\mathbb{E}} [\underset{\delta \in S}{max}\mathcal{L}(x + \delta, y; \theta)]</script>
 
-    <div id="serializable" class="step" data-x="2000" data-y="4500" data-z="0">
+        <ul>
+            <li>A saddle-point problem.</li>
+            <li>Repeatedly find worst case input perturbations <script type="math/tex">\delta</script> and then update the model parameters to reduce loss on these perturbed inputs.</li>
+	    <li>Kind of feels like the inverse of peeling.</li>
+        </ul>
     </div>
 
-    <div id="spanner" class="step" data-rel-x="0" data-rel-y="1500" data-rel-z="0">
+    <div id="adversarial-costs" class="step" data-rel-x="-1500" data-rel-y="400" data-z="0">
+        <h1>Is this universally better?</h1>
+	<img src="images/standard-accuracy.png" alt="Standard Accuracy">
     </div>
 
-    <div id="replication" class="step" data-x="500" data-y="4500" data-z="0">
+    <div id="data-augmentation" class="step" data-rel-x="-1500" data-rel-y="0" data-z="0">
+        <h1>Adversarial Training as Data Augmentation</h1>
+        <ul>
+          <li>Finding worst-case <script type="math/tex">\delta</script> corresponds to augmenting the training-data in the "most-confusing" and thus "most-helpful" maner.</li>
+        </ul>
     </div>
 
-    <div id="distributed-si" class="step" data-x="-1000" data-y="4500" data-z="0">
+    <div id="bin-class-example" class="step" data-rel-x="-1500" data-rel-y="0" data-z="0">
+        <h1>Binary Classification Example</h1>
+	<script type="math/tex; mode=display">y \overset{u.a.r.}{\sim} \{-1, 1\}, x_1 = \begin{cases} +y, & w.p. \; p \\ -y, & w.p. \; 1 - p \end{cases}</script>
+	<script type="math/tex; mode=display">x_2, \dots, x_{d+1} \sim N(\eta y, 1)</script>
+	where <script type="math/tex">\eta = \Theta(1 / \sqrt{d})</script>
+	<p> <script type="math/tex">p</script> corresponds to how correlated the feature <script type="math/tex">x_1</script> is with the label.
     </div>
 
-    <div id="lamport" class="step" data-rel-x="0" data-rel-y="1000" data-z="0">
+    <div id="standard-classification" class="step" data-rel-x="-1500" data-rel-y="0" data-z="0">
+        <h1>Standard Classification</h1>
+	<ul>
+	  <li>Response moderately correlated with <script type="math/tex">x_1</script> and very weakly correlated with remaining variables </li>
+	  <li>Natural Classifier </li>
+	<script type="math/tex; mode=display">f_{avg}(x) := sign(w_{unif}^Tx), \; \; \text{where } w_{unif}:= [ 0, \frac{1}{d}, \dots, \frac{1}{d} ]</script>
+	achieves accuracy arbitrarily close to 100%.
+	</ul>
     </div>
 
-    <div id="causality" class="step" data-rel-x="0" data-rel-y="1000" data-z="0">
+
+    <div id="standard-classification-cont" class="step" data-rel-x="-1500" data-rel-y="0" data-z="0">
+        <h1>Standard Classification (Cont.)</h1>
+	<script type="math/tex; mode=display">
+	\begin{align*}
+	  Pr[f_{avg}(x) = y] &= Pr[sign(w_{unif}x) = y]\\
+	    &= Pr[ \frac{y}{d} \sum_{i=1}^d N(\eta y, 1) > 0 ]\\
+	    &= Pr[N(\eta, \frac{1}{\eta}) > 0 ]\\
+	\end{align*}</script>
+	which is >99% when <script type="math/tex">\eta > 3 / \sqrt{d} </script>
     </div>
 
-    <div id="twopc" class="step" data-x="-2500" data-y="4500" data-z="0">
+    
+    <div id="adversarially-robust-classification" class="step" data-rel-x="-1500" data-rel-y="0" data-z="0">
+        <h1>Adversarially Robust Classification</h1>
+	<ul>
+	  <li><script type="math/tex">x_2, \dots, x_{d+1}</script> as a single "meta-feature" enough for standard classifier to get arbitrarily close to perfect classification.</li>
+	  <li>However, this feature is sensitive to adversarial perturbations.</li>
+	</ul>
     </div>
 
-    <div id="conclusion" class="step" data-x="-10300" data-y="-1300" data-z="0">
+
+    <div id="adversarially-robust-classification-cont" class="step" data-rel-x="-1500" data-rel-y="0" data-z="0">
+        <h1>Adversarially Robust Classification (Cont.)</h1>
+	Probability of meta-feature correctly predicting <script type="math/tex">y</script> is 
+	<script type="math/tex; mode=display">
+	\begin{align*}
+	  \underset{||\delta||_{\infty} \leq \epsilon}{min} Pr[sign(x + \delta) = y] &\leq Pr[N(\eta, \frac{1}{d}) - \epsilon > 0]\\
+            &= Pr[ N( -\eta, \frac{1}{d}) > 0] \\
+	\end{align*}</script>
+	Which means the simple classifier resulting only on these features cannot get adversarial accuracy better than 1%.
     </div>
 
-    <div id="overview" class="step" data-x="3000" data-y="1500" data-scale="12" style="pointer-events: none;">
+
+    
+    <div id="robustness-accuracy-tradeoff" class="step" data-rel-x="-1500" data-rel-y="0" data-z="0">
+        <h1>Robustness Accuracy Tradeoff</h1>
     </div>
+    
+    <div id="nonexistence-of-robust-and-accurate" class="step" data-rel-x="-1500" data-rel-y="0" data-z="0">
+        <h1>Nonexistence of Robust and Accurate</h1>
+    </div>
+
+
+    <div id="adversarial-training-matters" class="step" data-rel-x="-1500" data-rel-y="0" data-z="0">
+        <h1>Adversarial Training Matters</h1>
+    </div>
+
+    <div id="transferability" class="step" data-rel-x="-1500" data-rel-y="0" data-z="0">
+        <h1>Transferability</h1>
+    </div>
+    
+    <div id="unexpected-benefits" class="step" data-rel-x="-1800" data-rel-y="0" data-z="0">
+        <h1>Unexpected Benefits</h1>
+	<img src="images/loss-gradient.png" alt="Loss Gradient">
+    </div>
+    
+    <div id="unexpected-benefits-cont" class="step" data-rel-x="-1800" data-rel-y="0" data-z="0">
+        <h1>Unexpected Benefits (Cont.)</h1>
+	<img src="images/adversarial-examples.png" alt="Loss Gradient">
+    </div>
+
+    <div id="unexpected-benefits-cont2" class="step" data-rel-x="-1800" data-rel-y="0" data-z="0">
+        <h1>Unexpected Benefits (Cont.)</h1>
+	<img src="images/smooth-interpolation.png" alt="Loss Gradient">
+    </div>
+
+    <div id="questions" class="step" data-rel-x="-1500" data-rel-y="0" data-z="0">
+        <h1>Questions</h1>
+        <ul>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+    </div>
+
 </div>
 
 
